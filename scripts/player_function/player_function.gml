@@ -1,12 +1,13 @@
 
 // 플레이어 초기화
 function player_init() {
-    y = room_height / 2;
+    y = room_height -BLOCK_HEIGHT*2;
     line = 2; // 플레이어가 시작하는 라인 (0~4)
     base_speed = 4;
-    max_line = 4; // 총 5개의 라인
+    max_line = 3; // 총 5개의 라인
     gauge = 0; // 필살기 게이지
     gauge_max = 100; // 필살기 게이지 최대값
+	is_moving = false;
 }
 
 // 플레이어 이동 처리
@@ -14,12 +15,12 @@ function player_move() {
     if (!is_moving) {
         if (keyboard_check_pressed(vk_up) && line > 0) {
             line--;
-            move_target_y = y - room_height / 5;
+            move_target_y = y - BLOCK_HEIGHT;
             is_moving = true;
         }
-        if (keyboard_check_pressed(vk_down) && line < 4) {
+        if (keyboard_check_pressed(vk_down) && line < max_line) {
             line++;
-            move_target_y = y + room_height / 5;
+            move_target_y = y + BLOCK_HEIGHT;
             is_moving = true;
         }
     }

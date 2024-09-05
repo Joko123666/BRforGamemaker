@@ -3,11 +3,15 @@
 // oGame 초기화
 function game_init()
 {
+	#macro BLOCK_HEIGHT 64
     game_state = "title"; // 초기 상태는 타이틀 화면
     selected_option = 0; // 현재 선택된 옵션 (0: 게임 시작, 1: 게임 설정, 2: 게임 종료)
     options = ["게임 시작", "게임 설정", "게임 종료"]; // 타이틀 화면에서의 옵션
     max_options = 2; // 옵션 개수
 	road_length = 1280;
+	road_height = 64;
+	road_image_index = 0;
+	road_number = 4;
 	// 게임 상태 관련 변수
 	global.is_paused = false; // 게임이 일시정지 상태인지 여부
 	pause_selected_option = 0; // 일시정지 메뉴에서 선택된 옵션 (0: 계속하기, 1: 스테이지 선택)
@@ -184,10 +188,10 @@ function road_scroll() {
 }
 
 // 도로 그리기 함수 (도로 갯수에 따라 반복해서 그리기)
-function road_draw() {
+function road_draw(_road_num , _image_index) {
     for (var i = 0; i < road_length; i++) {
         var x_position = road_x + (i * 640); // 각 도로를 이어서 그리기
-        draw_sprite(sRoad, road_image_index, x_position, room_height - 64);
+        draw_sprite(sRoad, _image_index, x_position, room_height - 64*_road_num);
     }
 }
 

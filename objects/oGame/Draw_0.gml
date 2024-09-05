@@ -17,7 +17,21 @@ switch (game_state)
 	case "playing" :
 		if (!global.is_paused) {
 	    // 일시정지 상태가 아닐 때는 게임을 정상적으로 그리기
-	    road_draw(); // 도로 그리기
+		for (var i = 1; i <= road_number ; i++)
+		{
+			switch (i)
+			{
+				case 1 : road_image_index = 2;
+				break;
+				case 2 : road_image_index = 0;
+				break;
+				case 3 : road_image_index = 0;
+				break;
+				case 4 : road_image_index = 1;
+				break;
+			}
+			road_draw(i, road_image_index);
+		}
 		} else {
 		    // 일시정지 상태일 때는 일시정지 메뉴 그리기
 		    draw_pause_menu();
