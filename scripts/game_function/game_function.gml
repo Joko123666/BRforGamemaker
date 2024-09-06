@@ -26,6 +26,16 @@ function game_init()
 	    {name: "스테이지 2", difficulty: "중간", description: "도전적인 중간 난이도의 스테이지"},
 	    {name: "스테이지 3", difficulty: "어려움", description: "숙련자용 어려운 스테이지"}
 	];
+	
+	//길 setting
+	for (var i = 1; i <= 10; i++)
+	{
+		global.road_y[i] = room_height - BLOCK_HEIGHT*i;
+	}
+	//stage setting
+	global.stage_destroyed_objects = 0;
+	global.total_destroyed_objects =0;
+	global.stage_distance = 0;
 
 	// 선택된 스테이지 인덱스
 	selected_stage_index = 0;
@@ -42,6 +52,7 @@ function game_init()
 	transition_black_speed = 20;       // 검은색 스프라이트가 이동하는 속도
 	is_transitioning = false;          // 화면 전환이 진행 중인지 여부
 	transition_phase = 0;              // 0: 덮는 중, 1: 열리는 중
+	
 
 	initialize_input();
 }
@@ -324,4 +335,49 @@ function draw_pause_menu() {
         draw_text(room_width / 2, y_offset, option_text);
     }
     draw_set_color(c_white); // 색상 초기화
+}
+
+// GUI 드로우 함수 (좌상단: 플레이어 HP, 속도, 연료)
+function draw_player_status() {
+    var icon_size = 32; // 아이콘 크기
+    var bar_width = 150; // 막대의 너비
+    var bar_height = 20; // 막대의 높이
+    var padding = 10; // 각 요소 간격
+
+    // HP 아이콘 및 막대 그리기
+    draw_sprite(sIcon, 0, 20, 20); // HP 아이콘
+    draw_rectangle(60, 20, 60 + bar_width, 20 + bar_height, false); // 막대 테두리
+    var hp_ratio = oPlayer.HP / oPlayer.maxHP; // HP 비율
+    draw_rectangle(60, 20, 60 + bar_width * hp_ratio, 20 + bar_height, true); // HP 막대
+
+    // 속도 아이콘 및 막대 그리기
+    draw_sprite(sIcon, 1, 20, 60); // 속도 아이콘
+    draw_rectangle(60, 60, 60 + bar_width, 60 + bar_height, false); // 막대 테두리
+    var speed_ratio = (oPlayer.now_speed - oPlayer.min_speed) / (oPlayer.max_speed - oPlayer.min_speed); // 속도 비율
+    draw_rectangle(60, 60, 60 + bar_width * speed_ratio, 60 + bar_height, true); // 속도 막대
+
+    // 연료 아이콘 및 막대 그리기
+    draw_sprite(sIcon, 2, 20, 100); // 연료 아이콘
+    draw_rectangle(60, 100, 60 + bar_width, 100 + bar_height, false); // 막대 테두리
+    var fuel_ratio = oPlayer.now_fuel / oPlayer.max_fuel; // 연료 비율
+    draw_rectangle(60, 100, 60 + bar_width * fuel_ratio, 100 + bar_height, true); // 연료 막대
+}
+// GUI 드로우 함수 (우상단: 스테이지 정보)
+function draw_stage_gui() {
+    var text_x = room_width - 200; // 우상단 X 위치
+    var text_y = 20; // 첫 번째 텍스트 Y 위치
+
+    // 파괴한 오브젝트 수 표시
+    draw_text(text_x, text_y, "파괴한 오브젝트: " + string(global.stage_destroyed_objects));
+
+    // 주행 거리 표시
+    draw_text(text_x, text_y + 40, "주행 거리: " + string(global.stage_distance) + " m");
+}
+function animation_end()
+{
+	if (image_index >= image_number - 1)
+	{  // 현재 프레임이 마지막 프레임인지 확인  
+	    image_index = image_number - 1;  // 애니메이션이 계속 반복되지 않도록 유지
+		return true;
+	}
 }

@@ -3,11 +3,18 @@
 function player_init() {
     y = room_height -BLOCK_HEIGHT*2;
     line = 2; // 플레이어가 시작하는 라인 (0~4)
-    base_speed = 4;
-    max_line = 3; // 총 5개의 라인
+    max_speed = 7;
+	min_speed = 3;
+	now_speed = 5;
+    max_line = 3; // 총 4개의 라인
+	max_fuel = 100;
+	now_fuel = 100;
     gauge = 0; // 필살기 게이지
     gauge_max = 100; // 필살기 게이지 최대값
 	is_moving = false;
+	maxHP = 100;
+	HP = maxHP;
+	
 }
 
 // 플레이어 이동 처리
